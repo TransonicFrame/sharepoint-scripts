@@ -45,7 +45,7 @@ Function Backup-Entire-SPOFolder([Microsoft.SharePoint.Client.Folder]$Folder, $D
 
 #Download Variables
 $LibraryURL = "Shared Documents"
-$DownloadPath = "F:\Users\austi\Downloads\Test"
+$DownloadPath = "/mnt/"
 
 #Connects to server
 Connect-PnPOnline -ClientId $ClientId -CertificatePath $CertificatePath -CertificatePassword (ConvertTo-SecureString -AsPlainText $CertificatePassword -Force) -Url $SiteUrl -Tenant $TenantUrl 
