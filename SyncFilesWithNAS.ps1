@@ -1,6 +1,6 @@
 param (
     [string]$SiteUrl,
-    [string]$TenantUrl,
+    [string]$Tenant,
     [string]$ClientId,
     [string]$CertificatePath,
     [string]$CertificatePassword
@@ -48,10 +48,12 @@ $LibraryURL = "Shared Documents"
 $DownloadPath = "/mnt/"
 
 #Connects to server
-Connect-PnPOnline -ClientId $ClientId -CertificatePath $CertificatePath -CertificatePassword (ConvertTo-SecureString -AsPlainText $CertificatePassword -Force) -Url $SiteUrl -Tenant $TenantUrl 
+Connect-PnPOnline -ClientId $ClientId -CertificatePath $CertificatePath -CertificatePassword (ConvertTo-SecureString -AsPlainText $CertificatePassword -Force) -Url $SiteUrl -Tenant $Tenant 
 
 #Gets Library Folder
 $Folder = Get-PnPFolder -Url $LibraryURL
 
 #Calls Function
 Backup-Entire-SPOFolder $Folder $DownloadPath
+
+Disconnect-PnPOnline
