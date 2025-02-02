@@ -1,15 +1,15 @@
 param (
-    [string]$SiteUrl,
-    [string]$Tenant,
-    [string]$ClientId,
-    [string]$CertificatePath,
-    [string]$CertificatePassword
+    [string]$SiteUrl = $env:SiteUrl,
+    [string]$Tenant = $env:Tenant,
+    [string]$ClientId = $env:ClientId,
+    [string]$CertificatePath = $env:CertificatePath,
+    [string]$CertificatePassword = $env:CertificatePassword
 )
 
 Function Backup-Entire-SPOFolder([Microsoft.SharePoint.Client.Folder]$Folder, $DestinationFolder)
 { 
     $FolderURL = $Folder.ServerRelativeUrl.Substring($Folder.Context.Web.ServerRelativeUrl.Length)
-    $LocalFolder = $DestinationFolder + ($FolderURL -replace "/","\")
+    $LocalFolder = Join-Path -Path $DestinationFolder -ChildPath $FolderURL
     If (!(Test-Path -Path $LocalFolder)) {
             New-Item -ItemType Directory -Path $LocalFolder | Out-Null
             Write-host -f Yellow "Created a New Folder '$LocalFolder'"
@@ -45,7 +45,7 @@ Function Backup-Entire-SPOFolder([Microsoft.SharePoint.Client.Folder]$Folder, $D
 
 #Download Variables
 $LibraryURL = "Shared Documents"
-$DownloadPath = "/mnt/"
+$DownloadPath = "/mnt"
 
 #Connects to server
 Connect-PnPOnline -ClientId $ClientId -CertificatePath $CertificatePath -CertificatePassword (ConvertTo-SecureString -AsPlainText $CertificatePassword -Force) -Url $SiteUrl -Tenant $Tenant 
